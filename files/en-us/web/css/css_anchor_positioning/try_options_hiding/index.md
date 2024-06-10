@@ -6,32 +6,32 @@ page-type: guide
 
 {{CSSRef}}
 
-When using [CSS anchor positioning](/en-US/docs/Web/CSS/CSS_anchor_positioning), an important consideration is ensuring that anchor-positioned elements will always appear in a convenient place for the user to interact with them if at all possible, regardless of where the anchor is positioned. For example, when you scroll the page, anchors and their associated positioned elements will move towards the top of the viewport. When a positioned element starts to overflow the viewport, you will want to change its position to put it back on the screen again, for example on the opposite side of the anchor.
+When using [CSS anchor positioning](/en-US/docs/Web/CSS/CSS_anchor_positioning), an important consideration is ensuring that anchor-positioned elements will always appear in a convenient place for the user to interact with them if at all possible, regardless of where the anchor is positioned. For example, when you scroll the page, anchors and their associated positioned elements will move toward the top of the viewport. When a positioned element starts to overflow the viewport, you will want to flip its position to the other side of the anchor to keep it fully on the screen.
 
-Alternatively, in some situations it may be preferrable to just hide overflowing positioned elements — for example, if their anchors are offsceen their content might not make sense.
+Alternatively, sometimes it may be preferable to hide overflowing positioned elements. For example, if an anchor is offscreen, the positioned element's content might not make sense.
 
-This guide explains how to use the mechanisms CSS anchor positioning provides to manage these issues — **position try options** and **conditional hiding**. Position try options provide alternative positions for the browser to try placing elements in as they start to overflow, to keep them on-screen. Conditional hiding allows conditions to be specified under which the anchor or a postioned element will be hidden.
+This guide explains how to use CSS anchor positioning **position try options** and **conditional hiding** features to manage these issues. Position try options provide alternative positions for the browser to try as the positioned elements start to overflow to keep them on-screen. Conditional hiding allows specifying the conditions under which a positioned element should be hidden.
 
 > **Note:** For information on the basic fundamentals of CSS anchor positioning, see [Using CSS anchor positioning](/en-US/docs/Web/CSS/CSS_anchor_positioning/Using).
 
 ## Feature summary
 
-If a tool tip is fixed to the top-right of a UI element, if the user scrolls the content so that UI feature is in the top right corner of the viewport, that UI feature's tooltip will scroll off the screen. CSS anchor positioning solves such problems. The module's {{cssxref("position-try-options")}} property specifies one or more alternative position try options for the positioned element for the browser to try, to prevent it from overflowing. Try options can be specified using predefined try options, {{cssxref("inset-area")}} values (wrapped inside an [`inset-area()`](/en-US/docs/Web/CSS/inset-area_function) function), or custom options defined using the {{cssxref("@position-try")}} at-rule.
+If a tooltip is fixed to the top-right of a UI element and the user scrolls the content so that UI feature is in the top-right corner of the viewport, that UI feature's tooltip will be out of the viewport and off the screen. CSS anchor positioning solves such problems. The module's {{cssxref("position-try-options")}} property specifies a comma separated list of one or more alternative positions for the positioned element for the browser to try, in the order listed, to prevent it from overflowing. Try options can be specified using [predefined try tactics](#predefined-try-options), {{cssxref("inset-area")}} values (wrapped inside an [`inset-area()`](/en-US/docs/Web/CSS/inset-area_function) function), or [custom options](#custom-try-options) defined using the {{cssxref("@position-try")}} at-rule.
 
-In addition, the {{cssxref("position-try-order")}} property allows you to specify various options that result in an available position try option being set in preference to the element's initial positioning. For example, you might want to initially display the element in a space that has more available height or width.
+While the order of options to try is set by order of the options in the `position-try-option` value, the {{cssxref("position-try-order")}} property allows you to give precedence to the options in that list that have a preferred feature. You can specify various options that result in an available position try option being set in preference to the element's initial positioning. For example, you might want to initially display the element in a space that has more available height or width.
 
-> **Note:** The shorthand property {{cssxref("position-try")}} can be used to specify `position-try-order` and `position-try-options` values in a single declaration.
+The module also provides a {{cssxref("position-try")}} shorthand property which can be used to specify both `position-try-order` and `position-try-options` values in a single declaration.
 
 In some situations, anchor-positioned content does not make sense if the anchor is off-screen, or vice-versa. For example, you might have an anchor containing a quiz question, and answers contained in associated positioned elements, and wish to show them both together or not at all. This can be achieved with conditional hiding, which is managed via the {{cssxref("position-visibility")}} property. This property takes various values that define conditions under which overflowing elements will be hidden.
 
 ## Predefined try options
 
-The predefined try options values of the `position-try-options` property will "flip" the position of the anchor-positioned element across one or both axes if the element would otherwise overflow. The keyword values include:
+The predefined try options values of the `position-try-options` property will "flip" the position of the anchor-positioned element across one or both axes if the element would otherwise overflow. The `<try-tactic>` keyword values include:
 
 - `flip-block`
-  - : Flips the element's position along the block axis so that it appears the same distance away from the anchor but on the opposite side of it. In other words, it mirrors the element's position across an inline axis drawn through the center of the anchor. For example, if the positioned element started to overflow at the top of the anchor, this value would flip it to the bottom.
+  - : Flips the element's position along the block axis so that it appears the same distance away from the anchor but on the opposite side of it. For example, if the positioned element started to overflow at the top of the anchor, this value would flip it to the bottom.
 - `flip-inline`
-  - : Flips the element's position along the inline axis so that it appears the same distance away from the anchor but on the opposite side of it. To put it another way, it mirrors the element's position across a block axis drawn through the center of the anchor. If the positioned element started to overflow at the left of the anchor, this value would flip it to the right.
+  - : Flips the element's position along the inline axis so that it appears the same distance away from the anchor but on the opposite side of it. If the positioned element started to overflow at the left of the anchor, this value would flip it to the right.
 - `flip-start`
   - : Mirrors the element's position across an axis drawn diagonally through the center of the anchor, passing through the point at the intersection of the block axis start and the inline axis start, and the point at the intersection of the block axis end and the inline axis end. For example, if the positioned element started to overflow at the left of the anchor, this value would flip it to the top.
 
@@ -67,7 +67,9 @@ For illustrative purposes, we absolutely position the anchor so that it appears 
   border: 1px solid black;
   padding: 3px;
 }
+```
 
+```css
 .anchor {
   anchor-name: --myAnchor;
   position: absolute;
@@ -76,7 +78,7 @@ For illustrative purposes, we absolutely position the anchor so that it appears 
 }
 ```
 
-The anchor-positioned element is given fixed positioning and tethered to the anchor's top-left corner using an `inset-area`. It is given `position-try-options: flip-block, flip-inline;` to provide it with some options for moving the positioned element to stop it overflowing when the anchor gets near the edge of the viewport.
+The anchor-positioned element is given fixed positioning and tethered to the anchor's top-left corner using [`inset-area`](/en-US/docs/Web/CSS/CSS_anchor_positioning/Using#using_an_inset-area). It is given `position-try-options: flip-block, flip-inline;` to provide it with some options for moving the positioned element to stop it overflowing when the anchor gets near the edge of the viewport.
 
 ```css hidden
 .infobox {
@@ -98,26 +100,22 @@ The anchor-positioned element is given fixed positioning and tethered to the anc
 }
 ```
 
-> **Note:** When multiple try options are specified, they are separated by commas. Position try options are tried in the order they are specified in.
-
 Try scrolling the demo so that the anchor starts to get near the edges:
 
 {{ EmbedLiveSample("Using predefined try options", "100%", "250") }}
 
-- Move the anchor to the top of the viewport. The positioned element flips to the bottom-left of the anchor to avoid overflowing.
-- Move the anchor to the left of the viewport. The positioned element flips to the top-right of the anchor to avoid overflowing.
+- Keep the anchor horizontally centered, and move the anchor to the top of the viewport. The positioned element flips to the bottom-left of the anchor to avoid overflowing.
+- Keep the anchor vertically centered, and move it to the left of the viewport. The positioned element flips to the top-right of the anchor to avoid overflowing.
 
-If you move the anchor towards the top-left corner of the viewport, you'll notice a problem — as the positioned element starts to overflow in the block and inline direction, it flips back to its default top-left position and overflows in both directions, which not what we want.
+If you move the anchor towards the top-left corner of the viewport, you'll notice a problem — as the positioned element starts to overflow in the block and inline direction, it flips back to its default top-left position and overflows in both directions, which is not what we want.
 
-This happens because we only gave the browser position options of `flip-block` _or_ `flip-vertical`. We didn't give it the option of trying both at the same time. The browser tries the options, looking for one that causes the positioned element to be rendered completely inside the viewport or containing block. If it doesn't find one, it renders the positioned element in its default rendering position, with no position options applied.
+This happens because we only gave the browser position options of `flip-block` _or_ `flip-vertical`. We didn't give it the option of trying both at the same time. The browser tries the options, looking for one that causes the positioned element to be rendered completely inside the viewport or containing block. If it doesn't find one, it renders the positioned element in its default rendering position, not applying any of the position options provided.
 
 The next section demonstrates how to fix this issue.
 
 ## Combining multiple values into one option
 
-It is possible to put multiple [predefined try option](#predefined_try_options) or [custom try option](#custom_try_options) names into a single try option. The browser will combine the individual effects of these try options into a single combined option when trying to apply this option.
-
-> **Note:** [`inset-area` try options](#using_inset-area_try_options) can't be added into a combined try option.
+It is possible to put multiple [predefined try options](#predefined_try_options) or [custom try option](#custom_try_options) names into a single try option. The browser will combine the effects of the individual try options into a single combined option when trying to apply this option.
 
 Let's use a combined try option to fix the problem we found with the previous demo. All of the HTML and CSS in this demo is the same, except for the infobox positioning code. In this case, it is given a third position try option: `flip-block flip-inline`:
 
@@ -245,6 +243,8 @@ body {
 Scroll the page and check out the effect of these position try options as the anchor nears the edge of the viewport:
 
 {{ EmbedLiveSample("Using `inset-area` try options", "100%", "250") }}
+
+> **Note:** [`inset-area` try options](#using_inset-area_try_options) can't be added into a combined try option.
 
 ## Custom try options
 
