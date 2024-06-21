@@ -77,7 +77,7 @@ These resources are created by forward-thinking companies and web developers who
   - : At this point we've already looked at CSS fundamentals, how to style text, and how to style and manipulate the boxes that your content sits inside. Now it's time to look at how to place your boxes in the right place in relation to the viewport, and one another. We have covered the necessary prerequisites so can now dive deep into CSS layout, looking at different display settings, traditional layout methods involving float and positioning, and new fangled layout tools like flexbox.
 - [CSS reference](/en-US/docs/Web/CSS/Reference)
   - : Complete reference to CSS, with details on support by Firefox and other browsers.
-- [Fluid Grids](https://alistapart.com/article/fluidgrids/)
+- [Fluid grids](https://alistapart.com/article/fluidgrids/)
   - : Design layouts that fluidly resize with the browser window, while still using a typographic grid.
 - [CSS Challenges](https://en.wikiversity.org/wiki/Web_Design/CSS_challenges)
   - : Flex your CSS skills, and see where you need more practice.

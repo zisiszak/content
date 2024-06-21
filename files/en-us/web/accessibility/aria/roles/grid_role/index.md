@@ -358,8 +358,8 @@ document.querySelector("table").addEventListener("keydown", (event) => {
 
 ### More examples
 
-- [Data Grid Examples](https://www.w3.org/WAI/ARIA/apg/example-index/grid/dataGrids.html)
-- [Layout Grids Examples](https://www.w3.org/WAI/ARIA/apg/example-index/grid/LayoutGrids.html)
+- [Data grid examples](https://www.w3.org/WAI/ARIA/apg/example-index/grid/dataGrids.html)
+- [Layout grids Examples](https://www.w3.org/WAI/ARIA/apg/example-index/grid/LayoutGrids.html)
 - [W3C/WAI Tutorial: Tables](https://www.w3.org/WAI/tutorials/tables/)
 
 ## Accessibility concerns
